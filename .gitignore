@@ -1,3 +1,8 @@
+.idea
+
 # Dependency directories
 node_modules/
 *.log
+
+
+push_to_dockerhub.sh
