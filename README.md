@@ -1,5 +1,84 @@
 # Hello Kubernetes!
 
+This project is a fork of https://github.com/paulbouwer/hello-kubernetes
+Credit goes to Paul Bouwer
+
+This for adds a little more deug information about the environment.
+
+## Run locally
+
+On Ubuntu 18.04
+
+```
+$ sudo apt install npm
+$ npm install
+$ npm start
+# wget http://localhost:8080
+```
+
+
+Defaults are customizable via environment variables
+| Env. Variable | Default value |
+| ------------- |:-------------:|
+| PORT          | 8080          |
+| MESSAGE       | Hello World!  |
+| zebra stripes | are neat      |
+
+
+Run on a different port with a different message:
+```
+$ PORT=9090 MESSAGE="Hello K8S!" npm start
+# wget http://localhost:9090
+```
+
+## Run locally with Docker
+
+In a bash terminal:
+
+```
+$ docker build --no-cache --build-arg IMAGE_VERSION="1.5.1" --build-arg IMAGE_CREATE_DATE="`date -u +"%Y-%m-%dT%H:%M:%SZ"`" --build-arg IMAGE_SOURCE_REVISION="`git rev-parse HEAD`" -t "hello-kubernetes:1.5.1" -t "hello-kubernetes:latest" .
+$ docker run -P hello-kubernetes:1.5.1
+# wget http://localhost:8080
+```
+
+
+
+Run the Docker container listening on a different port with a different message:
+```
+$ docker build --no-cache --build-arg IMAGE_VERSION="1.5.1" --build-arg IMAGE_CREATE_DATE="`date -u +"%Y-%m-%dT%H:%M:%SZ"`" --build-arg IMAGE_SOURCE_REVISION="`git rev-parse HEAD`" -t "hello-kubernetes:1.5.1" -t "hello-kubernetes:latest" .
+$ docker run -e "MESSAGE=Hello K8S!" -p 9090:8080 hello-kubernetes:latest
+# wget http://localhost:9090
+```
+
+## Run locally on MiniK8s
+
+On Ubuntu 18.04
+
+```
+sudo snap install microk8s --classic
+kubectl apply -f k8s/hello-kubernetes.yaml
+# wget wget $(kubectl get services | grep hello-kubernetes | tr -s  " " | cut -d ' ' -f 3):80
+kubectl delete -f k8s/hello-kubernetes.yaml
+sudo snap remove microk8s
+```
+
+
+Customized
+```
+snap install microk8s --classic
+kubectl apply -f k8s/hello-kubernetes.yaml
+# wget wget $(kubectl get services | grep hello-kubernetes-custom | tr -s  " " | cut -d ' ' -f 3):80
+kubectl delete -f k8s/hello-kubernetes.custom.yaml
+sudo snap remove microk8s
+```
+
+
+
+**********************************************************************************
+
+
+
+
 This image can be deployed on a Kubernetes cluster. It displays:
 - a default **Hello world!** message
 - the pod name

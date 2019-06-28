@@ -12,13 +12,17 @@ app.use(morgan('combined'));
 // Configuration
 var port = process.env.PORT || 8080;
 var message = process.env.MESSAGE || "Hello world!";
+//var usedMemoryMB = process.memoryUsage().heapUsed / 1024 / 1024;
 
 app.get('/', function (req, res) {
     res.render('home', {
       message: message,
       platform: os.type(),
       release: os.release(),
-      hostName: os.hostname()
+      hostName: os.hostname(),
+      usedMemoryMB: Math.round(process.memoryUsage().heapUsed / 1024 / 1024 *100)/100,
+      port: process.env.PORT,
+      envVariables: JSON.stringify(process.env)
     });
 });
 

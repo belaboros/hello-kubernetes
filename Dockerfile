@@ -1,4 +1,4 @@
-FROM node:8.1.0-alpine
+FROM node:10.16.0-alpine
 
 ARG IMAGE_CREATE_DATE
 ARG IMAGE_VERSION
@@ -27,5 +27,8 @@ RUN npm install
 
 # Bundle app source
 COPY . /usr/src/app
+
+# By default this container can listens on port 8080
+EXPOSE 8080
 
 CMD [ "npm", "start" ]
